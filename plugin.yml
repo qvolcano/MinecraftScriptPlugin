@@ -1,0 +1,3 @@
+name: MinecraftJsPlugin
+version: 1.4.1
+main: com.qvolcano.minecraft.MinecraftJsPlugin
