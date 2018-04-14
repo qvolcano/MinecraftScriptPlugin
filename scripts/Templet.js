@@ -25,9 +25,7 @@ var script=(function(){
     }
 
     var script={
-        command:function(cmd){
-
-        },
+        command:function(cmd){},
 
         getPlayer:function(name){return Player()},
         getWorld:function(name){return World()},
@@ -133,6 +131,7 @@ var script=(function(){
 
 
 script.onEnabled.call=function(){
+	
 }
 script.onTime.call=function(){
 

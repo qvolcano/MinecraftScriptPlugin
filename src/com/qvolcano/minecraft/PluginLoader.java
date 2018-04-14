@@ -1,10 +1,6 @@
 package com.qvolcano.minecraft;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.nio.CharBuffer;
 
 import com.qvolcano.io.FileLoader;
 
@@ -15,8 +11,15 @@ public class PluginLoader {
 		if(file.exists()) {
 			FileLoader loader=new FileLoader();
 			try {
+				IPlugin plugin = null;
+				String filetype = file.getName().substring(file.getName().lastIndexOf(".") + 1);
 				String content=loader.loadString(file);
-				
+				if(filetype=="js") {
+					PluginContext context=new PluginContext();
+					plugin=new JSPlugin(context);
+					plugin.load(content);
+				}
+				_plugin=plugin;
 			} catch (Exception e) {
 				// TODO 自动生成的 catch 块
 				e.printStackTrace();
