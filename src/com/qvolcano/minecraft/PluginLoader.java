@@ -10,6 +10,7 @@ import com.qvolcano.io.FileLoader;
 
 public class PluginLoader {
 
+	private IPlugin _plugin;
 	public void loadPlugin(File file) {
 		if(file.exists()) {
 			FileLoader loader=new FileLoader();
@@ -21,5 +22,8 @@ public class PluginLoader {
 				e.printStackTrace();
 			}
 		}
+	}
+	public IPlugin getPlugin() {
+		return _plugin;
 	}
 }
