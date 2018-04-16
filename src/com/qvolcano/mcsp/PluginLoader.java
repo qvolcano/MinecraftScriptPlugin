@@ -4,6 +4,7 @@ import java.io.File;
 
 import com.qvolcano.io.FileLoader;
 import com.qvolcano.mcsp.js.JSPlugin;
+import com.qvolcano.mcsp.njs.JSNPlugin;
 
 public class PluginLoader {
 	private Plugin plugin;
@@ -19,7 +20,10 @@ public class PluginLoader {
 				String filetype=filename.substring(filename.lastIndexOf("."),filename.length());
 				if(filetype==".js") {
 					plugin=new JSPlugin(content);
+				}else if(filetype==".n.js") {
+					plugin=new JSNPlugin(content);
 				}
+				
 			}
 		}
 	}
