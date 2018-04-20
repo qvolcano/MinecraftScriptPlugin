@@ -2,12 +2,19 @@ package com.qvolcano.mcsp;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.nio.file.Path;
 import java.util.logging.Logger;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.qvolcano.utils.PathUtil;
+
 public class MinecraftScriptPlugin extends JavaPlugin{
-	PluginManager pluginManager=new PluginManager();
+	ScriptPluginManager pluginManager;
+	
+	public MinecraftScriptPlugin(){
+		pluginManager=new ScriptPluginManager(this);
+	}
 	
 	@Override
 	public void onEnable() {
@@ -32,25 +39,27 @@ public class MinecraftScriptPlugin extends JavaPlugin{
 		}
 		
 		File scriptFolder=new File(dataFolder.getAbsolutePath()+"/scripts");
-		if(scriptFolder.exists()==false) {
+		//if(scriptFolder.exists()==false) {
 			this.saveResource("scripts/Templet.js",false);
-		}else {
-			this.loadJsPlugins();
-		}
+			this.saveResource("scripts/Templet.n.js",false);
+		//}else {
+			this.loadScriptFiles();
+		//}
 	}
 	
-	private void loadJsPlugins() {
+	private void loadScriptFiles() {
 		File scriptFolder=new File(this.getDataFolder().getAbsolutePath()+"/scripts");
 		if(scriptFolder.exists()) {
 			File[] files=scriptFolder.listFiles(new FilenameFilter() {
 				@Override
 				public boolean accept(File dir, String name) {
-					return name.lastIndexOf(".js")==name.length()-3;
+					String exte=PathUtil.getFullExte(name);
+					return !(exte==".js"||exte==".n.js");
 				}
 			});
 			for (int i = 0; i < files.length; i++) {
 				File file=files[i];
-				this.pluginManager.loadPlugin(file);
+				this.pluginManager.loadScript(file);
 			}
 		}
 	}

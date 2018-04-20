@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+var script=(function(){
+	
+	var script={
+	    }
+	    return script;
+})();
+=======
 var script=(function(){
 	
 	var script={
@@ -107,3 +115,4 @@ var script=(function(){
 
 
 script
+>>>>>>> 6df1d3117892e2a1d8d416144d159f89cf4e300a
