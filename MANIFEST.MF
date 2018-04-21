@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Class-Path: ./MinecraftScriptPlugin/lib/rhino-js-1_7R4.jar
+Main-Class: com.qvolcano.mcsp.MinecraftScriptPlugin

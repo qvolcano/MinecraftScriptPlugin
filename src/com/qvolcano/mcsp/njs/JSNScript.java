@@ -1,5 +1,6 @@
 package com.qvolcano.mcsp.njs;
 
+import java.util.HashMap;
 import java.util.function.Function;
 
 import javax.script.Invocable;
@@ -8,6 +9,11 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.bukkit.event.Event;
+import org.bukkit.event.EventException;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginEnableEvent;
+import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeJavaObject;
@@ -35,10 +41,24 @@ public class JSNScript extends ScriptPlugin {
 	
 	@Override
 	public void onEnable() {
-		Object scriptObject=this.createScript(this.source);
+//		Object scriptObject=this.createScript(this.source);
+//		this.context.plugin.getServer().getPluginManager().registerEvent(PluginEnableEvent.class, new EventListener(), 0, null,null);
+		Listener listener=new Listener() {
+		};
+		EventExecutor executor=new EventExecutor() {
+			
+			@Override
+			public void execute(Listener arg0, Event arg1) throws EventException {
+				// TODO Auto-generated method stub
+				
+			}
+		};
+		HashMap<String, Class>hashMap =EventManager.EVENT_MAP;
+		for(String key : hashMap.keySet()) {
+			this.context.plugin.getServer().getPluginManager().registerEvent(hashMap.get(key),listener,EventPriority.NORMAL,executor,this.context.plugin);
+		}
 		
 	}
-	
 	private Object createScript(String source) {
 		Object script=null;
 		try {

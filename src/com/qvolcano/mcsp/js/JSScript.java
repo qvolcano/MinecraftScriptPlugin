@@ -28,10 +28,10 @@ public class JSScript extends ScriptPlugin {
 	private Object createScript() {
 		Object script=null;
 		try {
-			Context jcontext = Context.enter();  
-			Scriptable scope=jcontext.initStandardObjects(null);
-			jcontext.evaluateString(scope, source, "script", 1, null);
-			script=scope.get("script", scope);
+//			Context jcontext = Context.enter();  
+//			Scriptable scope=jcontext.initStandardObjects(null);
+//			jcontext.evaluateString(scope, source, "script", 1, null);
+//			script=scope.get("script", scope);
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

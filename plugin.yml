@@ -1,3 +1,3 @@
 name: MinecraftScriptPlugin
-version: 1.4.1
 main: com.qvolcano.mcsp.MinecraftScriptPlugin
+version: 1.0.0

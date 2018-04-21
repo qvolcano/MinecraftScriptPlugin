@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="lib" path="lib/rhino-js-1_7R4.jar"/>
+	<classpathentry kind="lib" path="lib/bukkit-1.7.9-R0.2.jar"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="libs"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_131">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="libs/bukkit-1.7.9-R0.2.jar"/>
-	<classpathentry kind="lib" path="libs/rhino-js-1_7R4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -23,7 +23,7 @@ public class ScriptPlugin implements Listener {
 	public void enable() {
 		if(enabled==false) {
 			enabled=true;
-			context.plugin.getServer().getPluginManager().registerEvents(this, context.plugin);
+//			context.plugin.getServer().getPluginManager().registerEvents(this, context.plugin);
 			onEnable();
 		}
 	}
@@ -31,7 +31,7 @@ public class ScriptPlugin implements Listener {
 	public void disable() {
 		if(enabled==true) {
 			enabled=true;
-			HandlerList.unregisterAll(this);
+//			HandlerList.unregisterAll(this);
 			onDisable();
 		}
 	}
@@ -45,45 +45,6 @@ public class ScriptPlugin implements Listener {
 		
 	}
 	
-	/***********************************server******************************/
-	@EventHandler
-	public void onServerCommand(ServerCommandEvent event) {
-		
-	}
 	
-	/***********************************player******************************/
-	@EventHandler
-	public void onPlayerChat(AsyncPlayerChatEvent event) {
-		
-	}
-	
-	/*
-	 * 玩家躺在床上时触发此事件.
-	 */
-	@EventHandler
-	public void onPlayerBedEnter(PlayerBedEnterEvent event){
-		
-		
-	}
-	
-	/*
-	 * 玩家离开床时触发此事件.
-	 */
-	@EventHandler
-	public void onPlayerBedLeave(PlayerBedLeaveEvent event){
-		
-		
-	}
-	
-	
-	@EventHandler
-	public void onPlayerLogin(PlayerLoginEvent event) {
-		
-	}
-	
-	@EventHandler
-	public void onPlayerQuit(PlayerQuitEvent event) {
-		
-	}
 	
 }
