@@ -9,6 +9,8 @@ import java.util.Map.Entry;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.qvolcano.utils.PathUtil;
+
 public class ScriptPluginManager {
 	private boolean enabled=false;
 	private HashMap<String, ScriptPlugin> scriptPluginMap=new HashMap<String,ScriptPlugin>();
@@ -27,7 +29,6 @@ public class ScriptPluginManager {
 	public void enableScript(String name) {
 		ScriptPlugin plugin=scriptPluginMap.get(name);
 		if(plugin!=null&&plugin.enabled==false) {
-			plugin.context=new ScriptPluginContext(this.plugin);
 			plugin.enable();
 		}
 	}
@@ -40,7 +41,14 @@ public class ScriptPluginManager {
 	}
 	
 	public void loadScript(File file) {
-		ScriptPluginLoader loader=new ScriptPluginLoader();
+		String name=PathUtil.getFileName(file.getPath());
+		if(scriptPluginMap.containsKey(name)) {
+			ScriptPlugin plugin=scriptPluginMap.get(name);
+			plugin.disable();
+			scriptPluginMap.remove(name);
+		}
+		
+		ScriptPluginLoader loader=new ScriptPluginLoader(this.plugin);
 		loader.load(file);
 		ScriptPlugin plugin=loader.getPlugin();
 		addScript(file.getName(), plugin);
