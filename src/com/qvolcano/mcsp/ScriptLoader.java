@@ -8,12 +8,12 @@ import com.qvolcano.mcsp.js.JSScript;
 import com.qvolcano.utils.FileLoader;
 import com.qvolcano.utils.PathUtil;
 
-public class ScriptPluginLoader {
-	private ScriptPlugin plugin;
+public class ScriptLoader {
+	private Script plugin;
 	private FileLoader loader=new FileLoader();
 	private JavaPlugin javaPlugin;
 	
-	public ScriptPluginLoader(JavaPlugin javaPlugin) {
+	public ScriptLoader(JavaPlugin javaPlugin) {
 		this.javaPlugin = javaPlugin;
 	}
 	
@@ -26,15 +26,13 @@ public class ScriptPluginLoader {
 				String filename=file.getName();
 				String filetype=PathUtil.getFullExte(filename);
 				if(filetype.equals(".js")) {
-					plugin=new JSScript(javaPlugin);
-					plugin.load(content);
+					plugin=new JSScript(content,javaPlugin);
 				}
-				
 			}
 		}
 	}
 	
-	public ScriptPlugin getPlugin() {
+	public Script getScript() {
 		return plugin;
 	}
 

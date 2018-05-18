@@ -1,8 +1,9 @@
 name: MinecraftScriptPlugin
 main: com.qvolcano.mcsp.MinecraftScriptPlugin
 version: 1.0.0
-mscp:
-  description: MinecraftScriptPlugin command.
-  usage: /<command> [player]
-  permission: <plugin name>
-  permission-message: You don't have <permission></source> </code> </blockquote> 
+commands:
+  mscp:
+    description: MinecraftScriptPlugin command.
+    usage: /<command> [player]
+    permission: <plugin name>
+    permission-message: You don't have <permission></source> </code> </blockquote> 

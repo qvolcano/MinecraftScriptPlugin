@@ -13,6 +13,8 @@ import org.bukkit.event.vehicle.*;
 import org.bukkit.event.weather.*;
 import org.bukkit.event.world.*;
 
+import com.qvolcano.mcsp.events.EnableEvent;
+
 
 public class EventEnum {
 	@SuppressWarnings("rawtypes")

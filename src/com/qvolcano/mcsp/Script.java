@@ -16,17 +16,17 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class ScriptPlugin implements Listener {
+public class Script implements Listener,com.qvolcano.utils.EventHandler {
 	public boolean enabled;
 	
 
 	public JavaPlugin javaPlugin;
 	
-	public ScriptPlugin(JavaPlugin javaPlugin) {
+	public Script(JavaPlugin javaPlugin) {
 		this.javaPlugin = javaPlugin;
 	}
 	
-	public void enable() {
+	public void enable() throws Exception {
 		if(enabled==false) {
 			enabled=true;
 //			context.plugin.getServer().getPluginManager().registerEvents(this, context.plugin);
@@ -43,24 +43,19 @@ public class ScriptPlugin implements Listener {
 	}
 	
 	
-	public void onEnable() {
+	public void onEnable() throws Exception {
 		
 	}
 	
 	public void onDisable() {
 		
 	}
-
-	public void load(String source) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void onEvent(Event event) {
-		// TODO Auto-generated method stub
-		
-	}
 	
+	public void execute(Event event) {
+		
+	}
+
+
 	
 	
 }

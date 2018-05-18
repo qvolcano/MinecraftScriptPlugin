@@ -5,7 +5,7 @@ public class PathUtil {
 	public static String escapePath(String path) {
         if (path==null)
             return "";
-        path = path.replaceAll("\\\\","/");
+        path = path.replace("\\","/");
         return path;
     };
     

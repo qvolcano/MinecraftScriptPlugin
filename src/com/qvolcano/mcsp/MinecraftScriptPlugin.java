@@ -10,28 +10,28 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.qvolcano.mcsp.events.ScriptPluginEventManager;
+import com.qvolcano.mcsp.events.EventManager;
 import com.qvolcano.utils.PathUtil;
 
 public class MinecraftScriptPlugin extends JavaPlugin{
-	ScriptPluginManager pluginManager;
-	ScriptPluginEventManager eventManager;
+	ScriptManager scriptManager;
+	EventManager eventManager;
 	
 	public MinecraftScriptPlugin(){
-		pluginManager=new ScriptPluginManager(this);
-		eventManager=new ScriptPluginEventManager(this);
+		scriptManager=new ScriptManager(this);
+		eventManager=new EventManager(this);
 	}
 	
 	@Override
 	public void onEnable() {
 		super.onEnable();
-		pluginManager.enable();
+		scriptManager.enable();
 	}
 	
 	@Override
 	public void onDisable() {
 		super.onDisable();
-		pluginManager.disable();
+		scriptManager.disable();
 	}
 	
 	@Override
@@ -39,7 +39,7 @@ public class MinecraftScriptPlugin extends JavaPlugin{
 		super.onLoad();
 		Facade.main=this;
 		Facade.logger=this.getLogger();
-		Facade.pluginManager=this.pluginManager;
+		Facade.pluginManager=this.scriptManager;
 		Facade.eventManager=this.eventManager;
 		//loadJS
 		File dataFolder=this.getDataFolder();
@@ -48,12 +48,8 @@ public class MinecraftScriptPlugin extends JavaPlugin{
 		}
 		
 		File scriptFolder=new File(dataFolder.getAbsolutePath()+"/scripts");
-		//if(scriptFolder.exists()==false) {
-			this.saveResource("scripts/Templet.js",false);
-			//this.saveResource("scripts/Templet.n.js",false);
-		//}else {
-			this.loadScriptFiles();
-		//}
+		this.saveResource("scripts/Templet.js",true);
+		this.loadScriptFiles();
 	}
 	
 	private void loadScriptFiles() {
@@ -68,22 +64,24 @@ public class MinecraftScriptPlugin extends JavaPlugin{
 			});
 			for (int i = 0; i < files.length; i++) {
 				File file=files[i];
-				this.pluginManager.loadScript(file);
+				this.scriptManager.loadScript(file);
 			}
 		}
 	}
 	
 	private void loadScript(String path) {
 		File file=new File(path);
-		this.pluginManager.loadScript(file);
+		if(file.exists()) {
+			this.scriptManager.loadScript(file);
+		}
 	}
 	
 	private void enableScript(String name) {
-		pluginManager.enableScript(name);
+		scriptManager.enableScript(name);
 	}
 	
 	private void disbledScript(String name) {
-		pluginManager.disableScript(name);
+		scriptManager.disableScript(name);
 	}
 	
 	@Override
@@ -94,12 +92,12 @@ public class MinecraftScriptPlugin extends JavaPlugin{
 	    	String optParam=args[1];
 	    	switch (optName) {
 			case "load":
-				loadScript(this.getDataFolder().getAbsolutePath()+"/scripts"+args[1]+".js");
+				loadScript(this.getDataFolder().getAbsolutePath()+"/scripts/"+args[1]+".js");
 				break;
-			case "open":
+			case "enable":
 				enableScript(args[1]);
 				break;
-			case "close":
+			case "disable":
 				disbledScript(args[1]);
 				break;
 			default:

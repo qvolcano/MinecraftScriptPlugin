@@ -1,20 +1,31 @@
 package com.qvolcano.mcsp.js;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.logging.Level;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.mozilla.javascript.BaseFunction;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.annotations.JSFunction;
+import org.mozilla.javascript.ast.LetNode;
+
+import com.qvolcano.mcsp.Facade;
+import com.qvolcano.utils.EventEnum;
+import com.qvolcano.utils.EventHandler;
+
+import jdk.nashorn.internal.runtime.ScriptObject;
 
 public class JSScriptContext extends ScriptableObject {
 	
 	private static final long serialVersionUID = -3801158101603251426L;
 	
-//	private HashMap<String, EventHandler>handlerMap=new HashMap<>();
-	
-	private HashMap<String, BaseFunction>eventMap=new HashMap<>();
-
 	private JSScript script;
 	
 	public JSScriptContext() {
@@ -25,31 +36,6 @@ public class JSScriptContext extends ScriptableObject {
 		return "JSScriptContext";
 	}
 
-	
-//	public void addEvent(String type,EventHandler handler) {
-//		Class<Event> event=EventEnum.EVENT_MAP.get(type);
-//		if(event!=null) {
-//			if(handlerMap.containsKey(type)==false) {
-//				script.javaPlugin.getServer().getPluginManager().registerEvent(event, handler, EventPriority.NORMAL, handler, script.javaPlugin);
-//				handlerMap.put(type, handler);
-//			}
-//		}
-//	}
-//	
-//	public void sendEvent(Event event) {
-//		String type=event.getEventName();
-//		if(handlerMap.containsKey(type)) {
-//			EventHandler handler=handlerMap.get(type);
-//			try {
-//				handler.execute(handler, event);
-//			} catch (EventException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//	}
-//	
-
-	
 	/**
 	 * 发布公告
 	 */
@@ -73,23 +59,44 @@ public class JSScriptContext extends ScriptableObject {
 		Player player=script.javaPlugin.getServer().getPlayer(playerUUID);
 		script.javaPlugin.getServer().dispatchCommand(player,command);
 	}
-
-	public void js_addEvent(String type,BaseFunction callback) {
-		script.addEvent(type);
-		eventMap.put(type, callback);
+	
+	@JSFunction
+	public void addEvent(String type,BaseFunction callback) {
+		script.addEvent(type,new EventHandler() {
+			@Override
+			public void execute(Event event) {
+				// TODO Auto-generated method stub
+				callback.call(script.javascriptContext, script.javascriptScope, script.javascriptScope,new Object[]{event});
+			}
+		});
 	}
+	
+
 
 	public void init(JSScript script) {
 		this.script = script;
 		
 	}
+	@JSFunction
+	public void addShapedRecipe(NativeObject source,NativeObject result) {
+		
+	}
 
-	public void onEvent(Event event) {
-		String type=event.getEventName();
-		if(eventMap.containsKey(type)) {
-			BaseFunction callback=eventMap.get(type);
-			callback.call(script.javascriptContext, script.javascriptScope, script.javascriptScope, null);
+	
+	@JSFunction
+	public void event(Object events) {
+		NativeObject aObject=(NativeObject)events;
+		Object[] ids=aObject.getAllIds();
+		for (int i = 0; i < ids.length; i++) {
+			String id=(String)ids[i];
+			BaseFunction callback=(BaseFunction)aObject.get(id);
+			addEvent(id, callback);
 		}
+	}
+	
+	@JSFunction
+	public void log(String message) {
+		Facade.logger.info(message);
 	}
 }
 //
