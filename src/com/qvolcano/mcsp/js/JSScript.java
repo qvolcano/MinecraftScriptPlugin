@@ -9,9 +9,12 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import org.bukkit.event.Event;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mozilla.javascript.BaseFunction;
 import org.mozilla.javascript.Context;
+import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
@@ -88,4 +91,14 @@ public class JSScript extends Script {
 		}
 	}
 	
+	
+	public boolean addShapedRecipe(Integer result,String[] shape,NativeObject items) {
+		ShapedRecipe recipe=new ShapedRecipe(new ItemStack(result));
+		recipe.shape(shape);
+		for(Object key:items.entrySet()) {
+			ItemStack stack = new ItemStack((Integer)items.get(key));
+			recipe.setIngredient((char) key,stack.getType());
+		}
+		return javaPlugin.getServer().addRecipe(recipe);
+	}
 }

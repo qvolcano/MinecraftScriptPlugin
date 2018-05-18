@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
@@ -77,10 +78,7 @@ public class JSScriptContext extends ScriptableObject {
 		this.script = script;
 		
 	}
-	@JSFunction
-	public void addShapedRecipe(NativeObject source,NativeObject result) {
-		
-	}
+	
 
 	
 	@JSFunction
@@ -97,6 +95,17 @@ public class JSScriptContext extends ScriptableObject {
 	@JSFunction
 	public void log(String message) {
 		Facade.logger.info(message);
+	}
+	
+	@JSFunction
+	public void recipes(NativeObject data) {
+		for(Object key:data.entrySet()) {
+			NativeObject recipe=(NativeObject)data.get(key);
+			if(recipe.containsKey("shape")) {
+				script.addShapedRecipe((Integer)recipe.get("output"), (String[])recipe.get("shape"), (NativeObject)recipe.get("input"));
+			}
+			
+		}
 	}
 }
 //
