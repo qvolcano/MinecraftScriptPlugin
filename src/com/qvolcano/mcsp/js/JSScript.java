@@ -97,7 +97,9 @@ public class JSScript extends Script {
 	
 	
 	public boolean addShapedRecipe(Integer result,String[] shape,NativeObject items) {
-		ShapedRecipe recipe=new ShapedRecipe(new ItemStack(result));
+		ItemStack resultItem=new ItemStack(result);
+		resultItem.setAmount(1);
+		ShapedRecipe recipe=new ShapedRecipe(resultItem);
 		recipe.shape(shape);
 		for(Entry<Object, Object> i:items.entrySet()) {
 			String key=(String) i.getKey();

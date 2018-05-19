@@ -115,16 +115,23 @@ public class JSScriptContext extends ScriptableObject {
 	
 	@JSFunction
 	public void recipes(NativeObject data) {
-		for(Entry<Object, Object> i:data.entrySet()) {
-			NativeObject recipe=(NativeObject)i.getValue();
-			if(recipe.containsKey("shape")) {
-				NativeArray shape=(NativeArray)recipe.get("shape");
-				String[] shapeList=(String[]) shape.toArray(new String[]{});
-			
-				script.addShapedRecipe((Integer)recipe.get("output"), shapeList, (NativeObject)recipe.get("input"));
-			}
-			
-		}
+		script.javaPlugin.getServer().getScheduler().runTaskLater((Plugin) script.javaPlugin, new Runnable() {
+	        @Override
+	        public void run() {
+	        	for(Entry<Object, Object> i:data.entrySet()) {
+	    			NativeObject recipe=(NativeObject)i.getValue();
+	    			if(recipe.containsKey("shape")) {
+	    				NativeArray shape=(NativeArray)recipe.get("shape");
+	    				String[] shapeList=(String[]) shape.toArray(new String[]{});
+	    			
+	    				script.addShapedRecipe((Integer)recipe.get("output"), shapeList, (NativeObject)recipe.get("input"));
+	    			}
+	    			
+	    		}
+	        }
+	      }, 1); // 
+		
+		
 	}
 }
 //
