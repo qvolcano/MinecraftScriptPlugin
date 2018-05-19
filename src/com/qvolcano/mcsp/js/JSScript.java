@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -20,8 +21,10 @@ import org.mozilla.javascript.ScriptableObject;
 
 import com.qvolcano.mcsp.Facade;
 import com.qvolcano.mcsp.Script;
+import com.qvolcano.mcsp.events.DisableEvent;
 import com.qvolcano.mcsp.events.EnableEvent;
 import com.qvolcano.utils.EventHandler;
+import com.sun.javafx.collections.MappingChange.Map;
 
 import sun.reflect.generics.tree.ReturnType;
 
@@ -61,11 +64,12 @@ public class JSScript extends Script {
 	
 	@Override
 	public void onDisable() {
-		javascriptContext.exit();
+		this.execute(new DisableEvent());
 		for (String type : eventHanlderMap.keySet()) {
 			Facade.eventManager.unregisterEvent(type, this);
 		}
 		eventHanlderMap.clear();
+		javascriptContext.exit();
 	}
 	
 	@Override
@@ -95,9 +99,12 @@ public class JSScript extends Script {
 	public boolean addShapedRecipe(Integer result,String[] shape,NativeObject items) {
 		ShapedRecipe recipe=new ShapedRecipe(new ItemStack(result));
 		recipe.shape(shape);
-		for(Object key:items.entrySet()) {
+		for(Entry<Object, Object> i:items.entrySet()) {
+			String key=(String) i.getKey();
+			Integer value=(Integer) i.getValue();
 			ItemStack stack = new ItemStack((Integer)items.get(key));
-			recipe.setIngredient((char) key,stack.getType());
+			stack.setAmount(value);
+			recipe.setIngredient(key.charAt(0),stack.getType());
 		}
 		return javaPlugin.getServer().addRecipe(recipe);
 	}

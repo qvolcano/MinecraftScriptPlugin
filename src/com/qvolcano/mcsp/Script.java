@@ -36,7 +36,7 @@ public class Script implements Listener,com.qvolcano.utils.EventHandler {
 	
 	public void disable() {
 		if(enabled==true) {
-			enabled=true;
+			enabled=false;
 //			HandlerList.unregisterAll(this);
 			onDisable();
 		}

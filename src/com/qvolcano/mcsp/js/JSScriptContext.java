@@ -3,18 +3,23 @@ package com.qvolcano.mcsp.js;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.plugin.Plugin;
 import org.mozilla.javascript.BaseFunction;
 import org.mozilla.javascript.Context;
+import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.annotations.JSFunction;
+import org.mozilla.javascript.annotations.JSGetter;
 import org.mozilla.javascript.ast.LetNode;
 
 import com.qvolcano.mcsp.Facade;
@@ -40,6 +45,7 @@ public class JSScriptContext extends ScriptableObject {
 	/**
 	 * 发布公告
 	 */
+	@JSFunction
 	public void broadcastMessage(String message) {
 		script.javaPlugin.getServer().broadcastMessage(message);
 	}
@@ -48,16 +54,23 @@ public class JSScriptContext extends ScriptableObject {
 	 * 在服务器执行一个命令
 	 * @param command
 	 */
+	@JSFunction
 	public void consoleCommand(String command) {
-		script.javaPlugin.getServer().dispatchCommand(script.javaPlugin.getServer().getConsoleSender(),command);
+		script.javaPlugin.getServer().getScheduler().runTaskLater((Plugin) script.javaPlugin, new Runnable() {
+		        @Override
+		        public void run() {
+		        	script.javaPlugin.getServer().dispatchCommand(script.javaPlugin.getServer().getConsoleSender(), command);
+		        }
+		      }, 1); // 1 = next tick
 	}
 	
 	/**
 	 * 玩家执行一个命令
 	 * @param command
 	 */
-	public void palyerCommand(java.util.UUID playerUUID,String command) {
-		Player player=script.javaPlugin.getServer().getPlayer(playerUUID);
+	@JSFunction
+	public void palyerCommand(String playerUUID,String command) {
+		Player player=script.javaPlugin.getServer().getPlayer(java.util.UUID.fromString(playerUUID));
 		script.javaPlugin.getServer().dispatchCommand(player,command);
 	}
 	
@@ -79,7 +92,10 @@ public class JSScriptContext extends ScriptableObject {
 		
 	}
 	
-
+	@JSGetter
+	public Server server() {
+		return script.javaPlugin.getServer();
+	}
 	
 	@JSFunction
 	public void event(Object events) {
@@ -99,10 +115,13 @@ public class JSScriptContext extends ScriptableObject {
 	
 	@JSFunction
 	public void recipes(NativeObject data) {
-		for(Object key:data.entrySet()) {
-			NativeObject recipe=(NativeObject)data.get(key);
+		for(Entry<Object, Object> i:data.entrySet()) {
+			NativeObject recipe=(NativeObject)i.getValue();
 			if(recipe.containsKey("shape")) {
-				script.addShapedRecipe((Integer)recipe.get("output"), (String[])recipe.get("shape"), (NativeObject)recipe.get("input"));
+				NativeArray shape=(NativeArray)recipe.get("shape");
+				String[] shapeList=(String[]) shape.toArray(new String[]{});
+			
+				script.addShapedRecipe((Integer)recipe.get("output"), shapeList, (NativeObject)recipe.get("input"));
 			}
 			
 		}

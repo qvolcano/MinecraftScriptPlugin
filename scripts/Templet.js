@@ -1,9 +1,8 @@
 context.event({
 	EnableEvent:function(){
-		context.log("script enable")
 	},
 	PlayerJoinEvent:function(event){
-		context.log("player logion!!")
+		context.broadcastMessage("t@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 		var player=event.getPlayer()
 		context.log(player.getDisplayName())
 	}

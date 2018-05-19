@@ -35,6 +35,7 @@ public class ScriptManager {
 				plugin.enable();
 				javaPlugin.getLogger().info("开启脚本:"+name);
 			} catch (Exception e) {
+				e.printStackTrace();
 				javaPlugin.getLogger().info("错误脚本:"+name);
 			}
 		}
@@ -60,9 +61,9 @@ public class ScriptManager {
 		ScriptLoader loader=new ScriptLoader(this.javaPlugin);
 		loader.load(file);
 		Script script=loader.getScript();
-		addScript(file.getName(), script);
+		addScript(name, script);
 		if(enabled) {
-			enableScript(file.getName());
+			enableScript(name);
 		}
 	}
 
