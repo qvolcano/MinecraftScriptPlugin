@@ -1,4 +1,4 @@
-package com.qvolcano.mcsp.js;
+package com.qvolcano.mcsp.script;
 
 import java.util.ArrayList;
 import java.util.HashMap;

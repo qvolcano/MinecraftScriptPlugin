@@ -59,7 +59,8 @@ public class MinecraftScriptPlugin extends JavaPlugin{
 				@Override
 				public boolean accept(File dir, String name) {
 					String exte=PathUtil.getFullExte(name);
-					return !(exte==".js"||exte==".n.js");
+					return true;
+//					return !(exte==".js"||exte==".n.js");
 				}
 			});
 			for (int i = 0; i < files.length; i++) {

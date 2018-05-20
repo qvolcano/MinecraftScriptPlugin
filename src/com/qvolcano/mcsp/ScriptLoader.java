@@ -4,7 +4,8 @@ import java.io.File;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.qvolcano.mcsp.js.JSScript;
+import com.qvolcano.mcsp.script.JSScript;
+import com.qvolcano.mcsp.script.RecipeScript;
 import com.qvolcano.utils.FileLoader;
 import com.qvolcano.utils.PathUtil;
 
@@ -25,9 +26,17 @@ public class ScriptLoader {
 			if(content!="") {
 				String filename=file.getName();
 				String filetype=PathUtil.getFullExte(filename);
-				if(filetype.equals(".js")) {
+				switch (filetype) {
+				case ".js":
 					plugin=new JSScript(content,javaPlugin);
+					break;
+				case ".recipe":
+					plugin=new RecipeScript(content, javaPlugin);
+					break;
+				default:
+					break;
 				}
+				
 			}
 		}
 	}
