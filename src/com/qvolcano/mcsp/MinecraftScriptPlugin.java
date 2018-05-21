@@ -11,6 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.qvolcano.mcsp.events.EventManager;
+import com.qvolcano.mcsp.script.ScriptManager;
 import com.qvolcano.utils.PathUtil;
 
 public class MinecraftScriptPlugin extends JavaPlugin{

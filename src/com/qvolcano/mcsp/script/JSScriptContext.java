@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Material;
@@ -23,7 +24,7 @@ import org.mozilla.javascript.annotations.JSGetter;
 import org.mozilla.javascript.ast.LetNode;
 
 import com.qvolcano.mcsp.Facade;
-import com.qvolcano.utils.EventEnum;
+import com.qvolcano.mcsp.events.BukkitEventEnum;
 import com.qvolcano.utils.EventHandler;
 
 import jdk.nashorn.internal.runtime.ScriptObject;
@@ -50,29 +51,28 @@ public class JSScriptContext extends ScriptableObject {
 		script.javaPlugin.getServer().broadcastMessage(message);
 	}
 	
+
 	/**
-	 * 在服务器执行一个命令
+	 * 执行一个命令
 	 * @param command
 	 */
 	@JSFunction
-	public void consoleCommand(String command) {
-		script.javaPlugin.getServer().getScheduler().runTaskLater((Plugin) script.javaPlugin, new Runnable() {
-		        @Override
-		        public void run() {
-		        	script.javaPlugin.getServer().dispatchCommand(script.javaPlugin.getServer().getConsoleSender(), command);
-		        }
-		      }, 1); // 1 = next tick
+	public void command(String command,Object playerUUID) {
+		if(playerUUID==null) {
+			script.javaPlugin.getServer().dispatchCommand(script.javaPlugin.getServer().getConsoleSender(), command);
+		}else {
+			Player player = null;
+			if(playerUUID instanceof UUID) {
+				player=script.javaPlugin.getServer().getPlayer((UUID)playerUUID);
+			}else if(playerUUID instanceof String) {
+				player=script.javaPlugin.getServer().getPlayer(java.util.UUID.fromString((String) playerUUID));
+			}else if(playerUUID instanceof Player) {
+				player=(Player) playerUUID;
+			}
+			script.javaPlugin.getServer().dispatchCommand(player,command);
+		}
 	}
 	
-	/**
-	 * 玩家执行一个命令
-	 * @param command
-	 */
-	@JSFunction
-	public void palyerCommand(String playerUUID,String command) {
-		Player player=script.javaPlugin.getServer().getPlayer(java.util.UUID.fromString(playerUUID));
-		script.javaPlugin.getServer().dispatchCommand(player,command);
-	}
 	
 	@JSFunction
 	public void addEvent(String type,BaseFunction callback) {

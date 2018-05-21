@@ -20,7 +20,6 @@ import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 
 import com.qvolcano.mcsp.Facade;
-import com.qvolcano.mcsp.Script;
 import com.qvolcano.mcsp.events.DisableEvent;
 import com.qvolcano.mcsp.events.EnableEvent;
 import com.qvolcano.utils.EventHandler;

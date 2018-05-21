@@ -1,11 +1,9 @@
-package com.qvolcano.mcsp;
+package com.qvolcano.mcsp.script;
 
 import java.io.File;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.qvolcano.mcsp.script.JSScript;
-import com.qvolcano.mcsp.script.RecipeScript;
 import com.qvolcano.utils.FileLoader;
 import com.qvolcano.utils.PathUtil;
 

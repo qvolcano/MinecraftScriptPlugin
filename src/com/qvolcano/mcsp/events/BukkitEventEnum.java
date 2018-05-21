@@ -1,4 +1,4 @@
-package com.qvolcano.utils;
+package com.qvolcano.mcsp.events;
 
 import java.util.HashMap;
 
@@ -13,10 +13,8 @@ import org.bukkit.event.vehicle.*;
 import org.bukkit.event.weather.*;
 import org.bukkit.event.world.*;
 
-import com.qvolcano.mcsp.events.EnableEvent;
 
-
-public class EventEnum {
+public class BukkitEventEnum {
 	@SuppressWarnings("rawtypes")
 	static public HashMap<String, Class> EVENT_MAP=new HashMap<>();
 	static {

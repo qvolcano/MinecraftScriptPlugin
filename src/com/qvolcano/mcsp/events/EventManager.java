@@ -3,11 +3,14 @@ package com.qvolcano.mcsp.events;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
 
-import com.qvolcano.mcsp.Script;
-import com.qvolcano.utils.EventEnum;
+import com.qvolcano.mcsp.script.Script;
 import com.qvolcano.utils.EventHandler;
+import com.qvolcano.utils.TimeType;
 
+import org.bukkit.World;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventException;
 import org.bukkit.event.EventPriority;
@@ -36,7 +39,7 @@ public class EventManager {
 	}
 	
 	public void registerEvent(String type,EventHandler handler) {
-		if(EventEnum.EVENT_MAP.containsKey(type)) {
+		if(BukkitEventEnum.EVENT_MAP.containsKey(type)) {
 			if(handlerMap.containsKey(type)==false) {
 				handlerMap.put(type, new ArrayList<EventHandler>());
 			}
@@ -46,7 +49,7 @@ public class EventManager {
 			ArrayList<EventHandler> list=handlerMap.get(type);
 			if(list.indexOf(handler)==-1) {
 				list.add(handler);
-				Class<Event> clszz=EventEnum.EVENT_MAP.get(type);
+				Class<Event> clszz=BukkitEventEnum.EVENT_MAP.get(type);
 				Listener listener=listenerMap.get(type);
 				javaPlugin.getServer().getPluginManager().registerEvent(clszz, listener, EventPriority.NORMAL, eventExecutor, javaPlugin);
 			}
@@ -76,6 +79,7 @@ public class EventManager {
 				EventHandler handler = (EventHandler) iterator.next();
 				handler.execute(event);
 			}
+			
 		}
 	}
 	
@@ -83,10 +87,29 @@ public class EventManager {
 		timerTickEvent=new BukkitRunnable() {
 			@Override
 			public void run() {
-				dispatchEvent(new TickEvent());
+				onTick();
 			}
 		};
 		timerTickEvent.runTaskLater(javaPlugin, 1000);
+	}
+	
+	
+	HashMap<UUID, Long> timeMap=new HashMap<>();
+	private void onTick() {
+		List<World> worlds=javaPlugin.getServer().getWorlds();
+		for (World world : worlds) {
+			UUID key=world.getUID();
+			if(timeMap.containsKey(key)) {
+				Long lastTime=timeMap.get(key);
+				Long curTime=world.getTime();
+				int lastTimeType=TimeType.getType(lastTime);
+				int curTimeType=TimeType.getType(curTime);
+				if(curTimeType!=lastTimeType) {
+					dispatchEvent(new TimeTypeEvent(curTimeType,key.toString()));
+				}
+			}
+		}
+		dispatchEvent(new TickEvent());
 	}
 }
 

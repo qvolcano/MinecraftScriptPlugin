@@ -1,4 +1,4 @@
-package com.qvolcano.mcsp;
+package com.qvolcano.mcsp.script;
 
 
 import javax.swing.text.View;

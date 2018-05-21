@@ -13,8 +13,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.mozilla.javascript.NativeObject;
 
-import com.qvolcano.mcsp.Script;
-
 public class RecipeScript extends Script {
 
 	private String source;
